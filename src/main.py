@@ -98,7 +98,10 @@ def pep(session):
     results = {}
     total = 0
     for tr in tqdm(num_trs):
-        expected_status = EXPECTED_STATUS[find_tag(tr, 'td').text[1:]]
+        status_key = find_tag(tr, 'td').text[1:]
+        expected_status = EXPECTED_STATUS.get(status_key, [])
+        if not expected_status:
+            logging.info(f'Неизвестный ключ статуса: \'{status_key}\'')
         pep_link = urljoin(pep_url, find_tag(tr, 'a')['href'])
         response = get_response(session, pep_link)
         if response is None:
@@ -110,10 +113,7 @@ def pep(session):
                 f'Несовпадающие статусы: {pep_link} '
                 f'Статус в карточке: {status} '
                 f'Ожидаемые статусы: {expected_status}')
-        if status in results:
-            results[status] += 1
-        else:
-            results[status] = 1
+        results[status] = results.get(status, 0) + 1
         total += 1
     return (
         [('Статус', 'Количество')]
