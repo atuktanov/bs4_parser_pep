@@ -3,6 +3,7 @@ from pathlib import Path
 MAIN_DOC_URL = 'https://docs.python.org/3/'
 MAIN_PEP_URL = 'https://peps.python.org/'
 BASE_DIR = Path(__file__).parent
+RESULT_DIR = 'results'
 DATETIME_FORMAT = '%Y-%m-%d_%H-%M-%S'
 EXPECTED_STATUS = {
         'A': ['Active', 'Accepted'],
